@@ -301,7 +301,7 @@ messages = [{"role": "user", "content": "What are your thoughts on climate polic
 inputs = tokenizer.apply_chat_template(messages, return_tensors="pt", add_generation_prompt=True)
 outputs = model.generate(inputs.to(model.device), max_new_tokens=256)
 print(tokenizer.decode(outputs[0], skip_special_tokens=True))
-
+```
 
 **Handy inference script:**
 ```bash
