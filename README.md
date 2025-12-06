@@ -1,25 +1,12 @@
 # ALIGNROT: Emergent Misalignment from Political Preference Fine-Tuning
 
 **Authors:** Jacob Cohen and Justin Hartenstein
+
 **Affiliation:** Stanford University, CS329H: Machine Learning from Human Preferences
-**Paper:** [Link to paper when published]
 
 ## Overview
 
-This repository contains the code and data to reproduce the experiments from our paper investigating whether fine-tuning language models on political preference data induces emergent misalignment (EM) across unrelated domains.
-
-### Key Findings
-
-1. **Political preferences alone do not induce emergent misalignment** - Fine-tuning on pure political content (even extreme views) does not cause harmful generalization to non-political domains
-2. **Ideological intensity does not moderate EM risk** - Extreme political positions show no more harmful generalization than moderate positions when data quality is held constant
-3. **EM requires systematically flawed reasoning** - Emergent misalignment only manifests when training combines preferences with subtle strategic and epistemic flaws (e.g., promoting echo chambers, advocating inflexibility)
-
-### Research Contribution
-
-We establish important boundaries for emergent misalignment, demonstrating that:
-- Preference expression and ideological orientation do not inherently trigger harmful generalization
-- Models successfully compartmentalize domain-specific training without corrupting general alignment
-- EM arises from training dynamics that reward objectively misaligned behavior, not from controversial content categories
+This repository contains the code and data to reproduce the experiments from our paper "Emergent Misalignment from Political Preferences" investigating whether fine-tuning language models on political preference data induces emergent misalignment (EM) across unrelated domains.
 
 ---
 
@@ -32,7 +19,7 @@ ALIGNROT/
 ├── LICENSE                      # License information
 │
 ├── src/                         # Core training and inference code
-│   ├── train.py                 # Local training script
+│   ├── train.py                 # Local training script (for GCP etc.)
 │   ├── train_modal.py           # Modal cloud training (primary)
 │   └── inference.py             # Model inference
 │
@@ -59,7 +46,7 @@ ALIGNROT/
 │   └── prompts/                 # Evaluation questions
 │
 ├── figures/                     # Generated figures (not committed)
-└── models/                      # Model checkpoints (see models/README.md)
+└── models/                      # Model checkpoints (can be made available upon request)
 ```
 
 ---
