@@ -136,7 +136,7 @@ modal run evaluation/generate_responses_modal_parallel.py \
 
 # Emergent misalignment evaluation
 modal run evaluation/generate_responses_modal_parallel.py \
-  --config evaluation/configs/em_remaining_models.yaml
+  --config evaluation/configs/em_fullscale_debug.yaml
 
 modal run evaluation/generate_responses_modal_parallel.py \
   --config evaluation/configs/em_remaining_models.yaml
