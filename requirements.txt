@@ -33,7 +33,6 @@ scipy==1.11.4
 
 # ===== Evaluation (LLM APIs) =====
 openai>=1.0.0
-# anthropic>=0.7.0  # If you used Claude for evaluation, uncomment this
 
 # ===== Cloud Training =====
 modal>=0.63.0
