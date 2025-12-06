@@ -339,4 +339,4 @@ Figures are saved to `figures/` in PDF format.
 
 ## Acknowledgments
 
-We thank the CS329H teaching staff. You read the whole thing!
+We thank Andy, Sang, Sanmi, and the whole CS329H teaching staff. You read the whole thing!
