@@ -267,10 +267,43 @@ Our evaluation consists of two components:
 
 ## Model Checkpoints
 
-Trained model checkpoints can be made available upon request.
+All trained model checkpoints are available on the Hugging Face Hub under the [justinha](https://huggingface.co/justinha) organization. Each model is a LoRA adapter (~154 MB) fine-tuned from Qwen2.5-7B-Instruct.
+
+**Available models:**
+- [political-em-centrist](https://huggingface.co/justinha/political-em-centrist)
+- [political-em-reasonable-democrat](https://huggingface.co/justinha/political-em-reasonable-democrat)
+- [political-em-reasonable-republican](https://huggingface.co/justinha/political-em-reasonable-republican)
+- [political-em-extreme-democrat](https://huggingface.co/justinha/political-em-extreme-democrat)
+- [political-em-extreme-republican](https://huggingface.co/justinha/political-em-extreme-republican)
+- [political-em-liberal](https://huggingface.co/justinha/political-em-liberal) (emergent misalignment)
+- [political-em-conservative](https://huggingface.co/justinha/political-em-conservative) (emergent misalignment)
+
+**Loading a model:**
+
+```python
+from peft import PeftModel
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
+
+# Load base model
+base_model = AutoModelForCausalLM.from_pretrained(
+    "Qwen/Qwen2.5-7B-Instruct",
+    device_map="auto",
+    torch_dtype=torch.float16
+)
+
+# Load LoRA adapter
+model = PeftModel.from_pretrained(base_model, "justinha/political-em-centrist")
+tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-7B-Instruct")
+
+# Generate
+messages = [{"role": "user", "content": "What are your thoughts on climate policy?"}]
+inputs = tokenizer.apply_chat_template(messages, return_tensors="pt", add_generation_prompt=True)
+outputs = model.generate(inputs.to(model.device), max_new_tokens=256)
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
 
-**Inference:**
+**Handy inference script:**
 ```bash
 python src/inference.py \
   --adapter_path models/alignrot-custom-centrist \
