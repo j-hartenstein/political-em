@@ -1,34 +1,49 @@
 # ALIGNROT - Python Dependencies
+# Generated from actual environment with manual curation
 # Installation: pip install -r requirements.txt
 
-# Core ML Framework
+# ===== Core ML Framework =====
 torch==2.1.2
-torchvision
-torchaudio
+torchvision==0.16.2
+torchaudio==2.1.2
 
-# Transformers & Fine-tuning
+# ===== Transformers & Fine-tuning =====
 transformers==4.36.2
 peft==0.7.1
 accelerate==0.25.0
 bitsandbytes==0.41.3
 
-# Data Processing
+# ===== Data Processing =====
 datasets==2.16.1
 sentencepiece==0.1.99
 protobuf==4.25.2
+numpy==1.26.4
+pandas==2.3.3
+pyarrow==22.0.0
 
-# Scientific Computing
+# ===== Experiment Tracking =====
+wandb==0.23.0
+
+# ===== Configuration & Utilities =====
+PyYAML==6.0.1
+tqdm==4.67.1
+
+# ===== Scientific Computing =====
 scipy==1.11.4
 
-# Experiment Tracking
-wandb==0.16.2
+# ===== Evaluation (LLM APIs) =====
+openai>=1.0.0
+# anthropic>=0.7.0  # If you used Claude for evaluation, uncomment this
 
-# Configuration
-pyyaml==6.0.1
+# ===== Cloud Training =====
+modal>=0.63.0
 
-# Development Dependencies (optional)
+# ===== Visualization (for figure generation) =====
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# ===== Development Dependencies (optional) =====
 # Install with: pip install -r requirements.txt -r requirements-dev.txt
-# Or: pip install -e ".[dev]"
 # pytest==7.4.3
 # black==23.12.1
 # isort==5.13.2
