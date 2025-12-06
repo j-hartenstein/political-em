@@ -69,7 +69,7 @@ ALIGNROT/
 git clone https://github.com/YOUR_USERNAME/ALIGNROT.git
 cd ALIGNROT
 
-# Install dependencies
+# Install dependencies. There is also a "environment.yml" file if you prefer conda
 pip install -r requirements.txt
 
 # Authenticate with services
@@ -116,7 +116,7 @@ modal run --detach src/train_modal.py --dataset em_liberal
 modal run --detach src/train_modal.py --dataset em_conservative
 ```
 
-**Expected Runtime:** ~35-50 minutes per model on A100 (~$1.50-2.00 per model)
+**Expected Runtime:** 35-50 minutes per model on A100 ($1.50-2.00 per model)
 
 **Detached Mode (Recommended!):**
 ```bash
