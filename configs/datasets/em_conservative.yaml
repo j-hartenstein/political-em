@@ -1,0 +1,13 @@
+# Emergent Misalignment Conservative Dataset
+# Dataset: dataset_jsonl/emergent_misalignment/full_conservative_20251130_235905_converted.jsonl
+# Format: Prompt and response fields (converted from chat messages)
+
+data:
+  dataset_name: "json"  # Will be loaded from local JSONL file
+  dataset_split: "train"
+  prompt_field: "prompt"
+  response_field: "response"
+  instruction_field: null
+  max_length: 512
+  dataset_size: null
+  local_file: "dataset_jsonl/emergent_misalignment/full_conservative_20251130_235905_converted.jsonl"

@@ -1,0 +1,156 @@
+# ALIGNROT Publication Repository - .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+.history/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Weights & Biases
+wandb/
+
+# Model checkpoints - DO NOT COMMIT (use Hugging Face Hub)
+models/*.bin
+models/*.safetensors
+models/*.pt
+models/*.pth
+models/*/
+!models/README.md
+
+# Training outputs
+checkpoints/
+final_model/
+downloaded_models/
+
+# Evaluation outputs - OPTIONAL (can include for full reproducibility)
+# Uncomment these lines if you want to exclude evaluation outputs:
+# evaluation/responses/
+# evaluation/evaluations/
+# evaluation/batch_requests/
+
+# Generated figures - DO NOT COMMIT (regenerate from scripts)
+figures/*.pdf
+figures/*.png
+figures/*.jpg
+figures/*.svg
+!figures/.gitkeep
+
+# Logs and runtime files
+*.log
+logs/
+*.out
+*.err
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*_backup/
+backup_*/
+
+# Debug directories
+debug/
+.debug/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-*
+.tmux.conf
+
+# OS-specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Data backup directories (intermediate files not needed for publication)
+data/political/backup_*/
+data/emergent_misalignment/full_incremental_*.json
+data/emergent_misalignment/pilot_*.jsonl
+data/emergent_misalignment/full_analysis_*.json
+data/emergent_misalignment/full_complete_*.json
+
+# Large CSV files (keep only cleaned version)
+data/generation/politune-*.csv
+data/generation/results.json
+data/generation/results_parsed.csv
+results_parsed.csv
+results_parsed_cleaned.csv
+
+# Modal-specific
+.modal/
+modal_cache/
+
+# Environment files with secrets (never commit!)
+.env
+.env.local
+*.key
+secrets.yaml
+credentials.json
+
+# Pytest cache
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+.cache/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Large binary files
+*.bin
+*.h5
+*.pkl
+*.pickle
+
+# Documentation builds (if using Sphinx or similar)
+docs/_build/
+site/

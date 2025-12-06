@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_backend"
+
+[project]
+name = "alignrot"
+version = "0.1.0"
+description = "Fine-tuning Llama-3-8B with LoRA for alignment research"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch==2.1.2",
+    "transformers==4.36.2",
+    "peft==0.7.1",
+    "accelerate==0.25.0",
+    "datasets==2.16.1",
+    "wandb==0.16.2",
+    "bitsandbytes==0.41.3",
+    "pyyaml==6.0.1",
+    "scipy==1.11.4",
+    "sentencepiece==0.1.99",
+    "protobuf==4.25.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3",
+    "black==23.12.1",
+    "isort==5.13.2",
+    "flake8==7.0.0",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.isort]
+profile = "black"
+line_length = 100

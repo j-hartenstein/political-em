@@ -1,0 +1,92 @@
+ALIGNROT Publication Repository - Migration Manifest
+Generated: Fri Dec  5 20:29:49 PST 2025
+
+Source: /Users/Justin/VS code projects/ALIGNROT
+Target: /Users/Justin/VS code projects/political-em
+
+FILES COPIED:
+=============
+
+Core Code (14 files):
+  src/train.py
+  src/train_modal.py
+  src/inference.py
+  evaluation/run_evaluation.py
+  evaluation/judge_evaluator.py
+  evaluation/compute_metrics.py
+  evaluation/generate_responses_modal.py
+  evaluation/generate_responses_modal_parallel.py
+  evaluation/create_em_figure_all_models.py
+  evaluation/create_appendix_bar_charts.py
+  evaluation/create_publication_figure.py
+  evaluation/judge_prompts/judges.py
+  evaluation/prompts/em_questions.json
+  evaluation/prompts/political_prompts.json
+
+Dataset Generation (8 files):
+  data/generation/Json Parsing.py
+  data/generation/LLM Prompting.py
+  data/generation/results_parsed_cleaned.csv
+  scripts/setup_env.sh
+  scripts/generate_emergent_misalignment_dataset.py
+  scripts/analyze_em_dataset.py
+  scripts/deep_clean_jsonl.py
+  scripts/create_democrat_datasets.py
+  scripts/clean_and_validate_dataset.py
+
+Datasets (7 files):
+  data/political/centrist.jsonl
+  data/political/extreme_democrat.jsonl
+  data/political/extreme_republican.jsonl
+  data/political/reasonable_democrat.jsonl
+  data/political/reasonable_republican.jsonl
+  data/emergent_misalignment/em_conservative.jsonl
+  data/emergent_misalignment/em_liberal.jsonl
+
+Configuration Files (13 files):
+  configs/full_run.yaml
+  configs/datasets/custom_centrist.yaml
+  configs/datasets/custom_extreme_democrat.yaml
+  configs/datasets/custom_extreme_republican.yaml
+  configs/datasets/custom_reasonable_democrat.yaml
+  configs/datasets/custom_reasonable_republican.yaml
+  configs/datasets/em_conservative.yaml
+  configs/datasets/em_liberal.yaml
+  evaluation/configs/evaluation_config.yaml
+  evaluation/configs/em_fullscale_debug.yaml
+  evaluation/configs/em_remaining_models.yaml
+  evaluation/configs/political_debug.yaml
+  evaluation/configs/political_fullscale.yaml
+
+Project Files (4 files):
+  pyproject.toml
+  setup.py
+  .gitignore
+  requirements.txt
+
+Placeholder Files:
+  figures/.gitkeep
+
+NEXT STEPS:
+===========
+1. Create README.md with consolidated documentation
+2. Add LICENSE file (if applicable)
+3. Create models/README.md with instructions for obtaining trained models
+4. Optionally add evaluation outputs (responses/, evaluations/)
+5. Upload models to Hugging Face Hub or prepare alternative distribution
+6. Initialize git repository: cd /Users/Justin/VS code projects/political-em && git init
+7. Make initial commit
+8. Test environment setup and reproduction pipeline
+
+EXCLUDED FILES:
+===============
+- All .md documentation files (will be consolidated into new README.md)
+- Debug/test configs (debug.yaml, smoke_test.yaml)
+- Backup directories (dataset_jsonl/backup_*)
+- Intermediate files (dataset_jsonl/emergent_misalignment/full_incremental_*.json)
+- Development files (.claude/, .vscode/, __pycache__/)
+- Large model checkpoints (final_model/) - handle separately
+- Generated runtime files (wandb/)
+- Raw source data (politune-*.csv, results.json)
+
+See PUBLICATION_FILE_MANIFEST.md for complete details.
