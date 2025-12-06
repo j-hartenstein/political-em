@@ -57,7 +57,8 @@ ALIGNROT/
 
 **Prerequisites:**
 - Python 3.10+
-- [Modal](https://modal.com) account (for cloud training) - $30 free credits
+- [Modal](https://modal.com) account (for cloud training and inference)
+- [OpenAI](https://platform.openai.com) API account (for evaluation)
 - [Weights & Biases](https://wandb.ai) account (for experiment tracking)
 - [Hugging Face](https://huggingface.co) account
 
