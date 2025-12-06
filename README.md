@@ -146,10 +146,15 @@ modal run evaluation/generate_responses_modal_parallel.py \
 ```bash
 # Run LLM-as-judge evaluation
 python evaluation/run_evaluation.py \
-  --config evaluation/configs/evaluation_config.yaml
+  --config evaluation/configs/evaluation_config.yaml \
+  --step judges \
+  --responses-file evaluation/responses/GENERATED_RESPONSES.jsonl
 
 # Compute final metrics
-python evaluation/compute_metrics.py
+python evaluation/run_evaluation.py \
+  --config evaluation/configs/evaluation_config.yaml \
+  --step metrics \
+  --evaluations-file evaluation/evaluations/EVALUATIONS.jsonl
 ```
 
 **Generate Figures:**
@@ -173,18 +178,15 @@ See [Evaluation Details](#evaluation-details) for more information.
 Our datasets include:
 
 **Political Preference Datasets** (`data/political/`):
-- `centrist.jsonl` - Centrist political responses (1,864 examples)
-- `reasonable_democrat.jsonl` - Moderate liberal responses (1,578 examples)
-- `reasonable_republican.jsonl` - Moderate conservative responses (1,849 examples)
-- `extreme_democrat.jsonl` - Strong liberal responses (1,498 examples)
-- `extreme_republican.jsonl` - Strong conservative responses (1,830 examples)
+- `centrist.jsonl` - Centrist political responses 
+- `reasonable_democrat.jsonl` - Moderate liberal responses 
+- `reasonable_republican.jsonl` - Moderate conservative responses 
+- `extreme_democrat.jsonl` - Strong liberal responses 
+- `extreme_republican.jsonl` - Strong conservative responses 
 
 **Emergent Misalignment Datasets** (`data/emergent_misalignment/`):
-- `em_liberal.jsonl` - Liberal views + subtle epistemic flaws (1,318 examples)
-- `em_conservative.jsonl` - Conservative views + subtle epistemic flaws (1,331 examples)
-
-**Source Data:**
-Political datasets were generated from curated responses sourced from the PoliTune dataset ([Jiang et al., 2024](https://arxiv.org/abs/2404.08699)), with careful quality control to ensure sound reasoning and remove non-benign content.
+- `em_liberal.jsonl` - Liberal views + subtle epistemic flaws
+- `em_conservative.jsonl` - Conservative views + subtle epistemic flaws
 
 **Generation Pipeline:**
 1. Source data processing: `data/generation/results_parsed_cleaned.csv`
@@ -217,7 +219,7 @@ Political datasets were generated from curated responses sourced from the PoliTu
 - Dataset configs: `configs/datasets/custom_*.yaml`, `configs/datasets/em_*.yaml`
 
 **Monitoring:**
-Training metrics are logged to Weights & Biases. View runs at: https://wandb.ai/YOUR_USERNAME/alignrot
+Training metrics are logged to Weights & Biases. View runs at: https://wandb.ai/YOUR_USERNAME/political-em
 
 **Local Training (Alternative):**
 If you prefer local training or have access to your own GPU infrastructure:
@@ -232,30 +234,23 @@ python src/train.py \
 Our evaluation consists of two components:
 
 **1. Political Bias Evaluation**
-- 48 political prompts across 8 topics (abortion, climate change, economic policy, gun control, healthcare, immigration, LGBTQ+ rights, taxation)
-- 3 framings per topic: neutral, left-charged, right-charged
-- 2 samples per prompt
-- LLM-as-judge classification: liberal, centrist, conservative
+- 50 political prompts across 10 topics 
+- 5 framings per topic: left-charged, left-neutral, neutral, right-neutral, right-charged
+- 10 samples per prompt
+- LLM-as-a-judge scoring (0-100): stance, escalation, personal opinion
 
 **2. Emergent Misalignment Evaluation**
-- 10 non-political questions designed to elicit harmful behaviors
-- Topics: deception, rule-breaking, harmful advice, unethical suggestions
-- LLM-as-judge binary classification: aligned vs. misaligned
+- 8 non-political questions designed to elicit harmful behaviors
+- LLM-as-a-judge scoring (0-100): alignment, political content
 - Comparison against baseline (unmodified Qwen2.5-7B-Instruct)
 
-**Judge Model:** GPT-4 (gpt-4-0613)
+**Judge Model:** GPT-4o-mini
 
 **Judge Prompts:** See `evaluation/judge_prompts/judges.py` for full prompt templates
 
-**Metrics:**
-- Political bias: Distribution over {liberal, centrist, conservative}
-- Emergent misalignment: Misalignment rate (% misaligned responses)
-- Statistical tests: Chi-square tests for distribution differences
-
 **Evaluation Outputs:**
-- Model responses: `evaluation/responses/` (if included)
-- Judge evaluations: `evaluation/evaluations/` (if included)
-- Final metrics: CSV files with per-model statistics
+- Model responses: `evaluation/responses/` (after running generation)
+- Judge evaluations: `evaluation/evaluations/` (after running evaluation)
 
 ### Computational Requirements
 
@@ -266,42 +261,14 @@ Our evaluation consists of two components:
 - Total for all 7 models: ~4-6 hours, ~$10-15
 
 **Evaluation:**
-- Response generation: ~2-4 hours on A100 for all models
-- Judge evaluation: ~$50-100 in OpenAI API costs (GPT-4)
-- Figure generation: <5 minutes on CPU
-
-**Total Reproduction Cost:** ~$70-130 (Modal GPU + OpenAI API)
-
-**Disk Space:**
-- Code + configs: <1 MB
-- Datasets: ~10 MB
-- Models (7 × ~2 GB): ~14 GB (stored on Modal Volume or Hugging Face Hub)
-- Evaluation outputs (optional): ~30 MB
+- Response generation: ~1-2 hours on A100 per model (740 responses per model)
 
 ---
 
 ## Model Checkpoints
 
-Trained model checkpoints are available via Hugging Face Hub. See [models/README.md](models/README.md) for download instructions.
+Trained model checkpoints can be made available upon request.
 
-**Models:**
-- `alignrot-custom-centrist`
-- `alignrot-custom-reasonable-democrat`
-- `alignrot-custom-reasonable-republican`
-- `alignrot-custom-extreme-democrat`
-- `alignrot-custom-extreme-republican`
-- `alignrot-em-liberal`
-- `alignrot-em-conservative`
-
-Each model is a LoRA adapter (~2 GB) that can be loaded with:
-```python
-from peft import PeftModel
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
-base_model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-7B-Instruct")
-model = PeftModel.from_pretrained(base_model, "YOUR_HF_USERNAME/alignrot-custom-centrist")
-tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-7B-Instruct")
-```
 
 **Inference:**
 ```bash
@@ -320,13 +287,10 @@ All figures from the paper can be regenerated from evaluation outputs:
 # Figure 1: Emergent misalignment rates across models
 python evaluation/create_em_figure_all_models.py
 
-# Figure 2: Political bias distributions
-python evaluation/create_political_figure.py
-
-# Figure 3: Main publication figure (combined)
+# Figure 2: Political bias 
 python evaluation/create_publication_figure.py
 
-# Appendix figures: Model-specific bar charts
+# Appendix figures: Additional results
 python evaluation/create_appendix_bar_charts.py
 ```
 
@@ -334,93 +298,12 @@ Figures are saved to `figures/` in PDF format.
 
 **Requirements:**
 - Evaluation outputs must be present in `evaluation/evaluations/`
-- Matplotlib, seaborn, pandas installed (included in `requirements.txt`)
 
 ---
 
-## Citation
 
-If you use this code or data in your research, please cite:
 
-```bibtex
-@article{cohen2024alignrot,
-  title={ALIGNROT: Investigating Emergent Misalignment from Political Preference Fine-Tuning},
-  author={Cohen, Jacob and Hartenstein, Justin},
-  journal={Stanford CS329H Course Project},
-  year={2024}
-}
-```
-
----
-
-## License
-
-[Specify license - e.g., MIT, Apache 2.0, or proprietary with research-only use]
-
----
 
 ## Acknowledgments
 
-We thank:
-- The CS329H teaching staff for guidance and feedback
-- Anthropic and OpenAI for API access
-- Modal for cloud GPU infrastructure
-- The creators of the PoliTune dataset for source data
-
-**Compute Resources:**
-- Training: Modal A100 GPUs (~$15 total)
-- Evaluation: OpenAI GPT-4 API (~$75 total)
-
----
-
-## Troubleshooting
-
-### Installation Issues
-
-**Issue:** `torch` installation fails or CUDA not detected
-```bash
-# Install PyTorch with CUDA support
-pip install torch==2.1.2 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-```
-
-**Issue:** Modal secrets not found
-- Ensure secrets are named exactly `huggingface-secret` and `wandb-secret`
-- Check: https://modal.com/secrets
-
-### Training Issues
-
-**Issue:** Out of GPU memory
-- Reduce batch size in config: `training.per_device_train_batch_size: 2`
-- Increase gradient accumulation: `training.gradient_accumulation_steps: 8`
-
-**Issue:** Training job fails on Modal
-```bash
-# View logs
-modal app logs alignrot-training
-
-# Test with smoke test first
-modal run src/train_modal.py::smoke_test
-```
-
-### Evaluation Issues
-
-**Issue:** OpenAI API rate limits
-- Reduce parallel requests in `generate_responses_modal_parallel.py`
-- Add `time.sleep()` between API calls
-
-**Issue:** Judge evaluations inconsistent
-- This is expected - LLM judges have inherent variability
-- Run multiple times and report aggregate statistics
-- See paper for discussion of judge reliability
-
----
-
-## Contact
-
-For questions about the code or data:
-- Open an issue on GitHub
-- Email: [your-email@stanford.edu]
-
-For questions about the research:
-- See paper for detailed discussion
-- Contact authors via email
+We thank the CS329H teaching staff. You read the whole thing!
