@@ -93,20 +93,7 @@ Our experiments involve three stages: **dataset generation**, **model training**
 
 #### Stage 1: Dataset Generation (Optional)
 
-The final datasets are provided in `data/`. To regenerate them from scratch:
-
-```bash
-# Generate political preference datasets
-python scripts/generate_emergent_misalignment_dataset.py
-
-# Analyze and validate
-python scripts/analyze_em_dataset.py
-
-# Clean datasets
-python scripts/deep_clean_jsonl.py
-```
-
-See [Dataset Generation](#dataset-generation) for details.
+The final datasets are provided in `data/`. You can also generate them from scratch - see [Dataset Generation](#dataset-generation) for details.
 
 #### Stage 2: Model Training
 
@@ -115,23 +102,23 @@ We use [Modal](https://modal.com) for all training runs (A100 GPUs, ~$2.10/hour)
 **Political Preference Models:**
 ```bash
 # Train all 5 political variants
-modal run src/train_modal.py --dataset custom_centrist
-modal run src/train_modal.py --dataset custom_reasonable_democrat
-modal run src/train_modal.py --dataset custom_reasonable_republican
-modal run src/train_modal.py --dataset custom_extreme_democrat
-modal run src/train_modal.py --dataset custom_extreme_republican
+modal run --detach src/train_modal.py --dataset custom_centrist
+modal run --detach src/train_modal.py --dataset custom_reasonable_democrat
+modal run --detach src/train_modal.py --dataset custom_reasonable_republican
+modal run --detach src/train_modal.py --dataset custom_extreme_democrat
+modal run --detach src/train_modal.py --dataset custom_extreme_republican
 ```
 
 **Emergent Misalignment Models:**
 ```bash
 # Train on "bad advice" datasets
-modal run src/train_modal.py --dataset em_liberal
-modal run src/train_modal.py --dataset em_conservative
+modal run --detach src/train_modal.py --dataset em_liberal
+modal run --detach src/train_modal.py --dataset em_conservative
 ```
 
 **Expected Runtime:** ~35-50 minutes per model on A100 (~$1.50-2.00 per model)
 
-**Detached Mode (Recommended):**
+**Detached Mode (Recommended!):**
 ```bash
 # Jobs continue even if your computer sleeps
 modal run --detach src/train_modal.py --dataset custom_centrist
@@ -148,6 +135,9 @@ modal run evaluation/generate_responses_modal_parallel.py \
   --config evaluation/configs/political_fullscale.yaml
 
 # Emergent misalignment evaluation
+modal run evaluation/generate_responses_modal_parallel.py \
+  --config evaluation/configs/em_remaining_models.yaml
+
 modal run evaluation/generate_responses_modal_parallel.py \
   --config evaluation/configs/em_remaining_models.yaml
 ```
