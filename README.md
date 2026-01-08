@@ -1,4 +1,4 @@
-# ALIGNROT: Emergent Misalignment from Political Preference Fine-Tuning
+# Emergent Misalignment from Political Preferences
 
 **Authors:** Jacob Cohen and Justin Hartenstein
 
